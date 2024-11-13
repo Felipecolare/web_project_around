@@ -167,13 +167,14 @@
     opacity: 0.6;
   }
   
-  .popup__open-bigImage {
-    max-height: 540px;
-    max-width: 816px;
-    height: 75vh;
-    width: 75vw;
+  .popup__bigImage-card img {
+    max-width: 75vw;
+    max-height: 75vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
   }
-  
+
   .popup__subtitle-bigImage {
     font-size: 12px;
     font-weight: 400;

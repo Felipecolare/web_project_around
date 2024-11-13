@@ -185,8 +185,11 @@ function addImageCard(event) {
     inputImageTitle.value = "";
     inputImageUrl.value = "";
   }
+
   addImage.classList.add("formButton_disabled");
   addImage.setAttribute("disabled", true);
   modalImage.style.display = "none";
 }
-addImage.addEventListener("click", addImageCard);
+
+const imageForm = document.querySelector('.popup__input');
+imageForm.addEventListener('submit', addImageCard);

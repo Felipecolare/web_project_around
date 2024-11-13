@@ -1,4 +1,3 @@
-# Tripleten web_project_around
 # Tripleten - Web Project Around
 
 Tripleten Project Arround is a website that people can have their profile.
@@ -16,4 +15,4 @@ The technologies used were HTML, CSS and Javascript applying BEM methodology in 
 
 ### GitHub Page:
 
-git@github.com:Felipecolare/web_project_around.git
+https://felipecolare.github.io/web_project_around/
