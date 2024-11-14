@@ -181,7 +181,7 @@ function addImageCard(event) {
       name: inputImageTitle.value,
       link: inputImageUrl.value,
     });
-    cards.prepend(newCard);
+    cards.append(newCard);
     inputImageTitle.value = "";
     inputImageUrl.value = "";
   }

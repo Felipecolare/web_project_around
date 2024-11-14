@@ -208,8 +208,13 @@
     }
   
     .popup__button-close {
-      right: 5px;
-      top: -40px;
+      background: transparent url("../images/close-icon.png") center no-repeat;
+      position: absolute;
+      right: 15px;
+      top: 15px;
+      border: none;
+      width: 26px;
+      height: 26px;
     }
   
     .popup__bigImage-cardContainer {
