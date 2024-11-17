@@ -1,29 +1,30 @@
 .popup__container {
-    background: rgba(0, 0, 0, 0.5);
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    width: 100%;
-    display: none;
-    z-index: 3;
-  }
-  
-  .popup__card {
-    background: rgba(255, 255, 255, 1);
-    max-width: 430px;
-    width: 100%;
-    border-radius: 6px;
-    border: 1px solid rgba(0, 0, 0, 1);
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    position: relative;
-    border-radius: 10px;
-    box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.15);
-    animation: 1s drop;
-  }
+  background: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100%;
+  display: none;
+  z-index: 3;
+}
+
+.popup__card {
+  background: rgba(255, 255, 255, 1);
+  max-width: 430px;
+  width: 100%;
+  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 1);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  position: relative;
+  border-radius: 10px;
+  box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.15);
+  animation: 1s drop;
+}
+
   @keyframes drop {
     0% {
       top: -100px;
@@ -34,13 +35,13 @@
   }
   
   .popup__button-close {
-    background: transparent url("../images/close-icon.png") center no-repeat;
     position: absolute;
-    right: -34px;
-    top: -30px;
+    top: 10px;
+    right: 10px;
+    background-color: transparent;
     border: none;
-    width: 26px;
-    height: 26px;
+    font-size: 24px;
+    cursor: pointer;
   }
   .popup__button-close:hover {
     background: transparent url("../images/close-clicked-icon.png") center
@@ -168,10 +169,9 @@
   }
   
   .popup__bigImage-card img {
-    max-width: 75vw;
-    max-height: 75vh;
-    width: auto;
-    height: auto;
+    max-width: 816px;
+    max-height: 540px;
+    width: 100%;
     object-fit: contain;
   }
 
@@ -228,8 +228,8 @@
     }
   
     .popup__open-bigImage {
-      max-width: 240px;
-      max-height: 299px;
+      max-width: 816px;
+      max-height: 540px;
     }
   
     .popup__subtitle-bigImage {

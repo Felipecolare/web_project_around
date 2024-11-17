@@ -11,6 +11,8 @@
     max-width: 282px;
     width: 100%;
     position: relative;
+    border-radius: 10px;
+  overflow: hidden;
   }
   
   .grid__card-delete {
@@ -33,6 +35,9 @@
     max-width: 282px;
     height: 282px;
     object-fit: cover;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    width: 100%;
   }
   
   .grid__card-text {
