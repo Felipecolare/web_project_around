@@ -166,6 +166,7 @@ function addImageCard(event) {
   addImage.setAttribute("disabled", true);
   modalImage.style.display = "none";
 }
-const imageForm = document.querySelector('.popup__input');
 
-addImage.addEventListener('click', addImageCard);
+const formImage = document.querySelector('.form-image');
+
+formImage.addEventListener('submit', addImageCard);
