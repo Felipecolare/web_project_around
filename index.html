@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="author" content="Felipe Augusto Colares" />
+    <meta name="description" content="Around Project" />
+    <meta name="keywords" content="HTML, CSS, Javascript" />
+    <title>Project Around The U.S.</title>
+    <link rel="stylesheet" href="./pages/index.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header class="header page__container">
+        <nav class="nav">
+          <img
+            src="./images/logo_around.png"
+            alt="Logo Around The U.S."
+            class="nav__image"
+          />
+        </nav>
+
+        <section class="profil">
+          <div class="profile__card-image">
+            <img
+              src="./images/jacques_cousteau.png"
+              alt="Jacques Cousteau"
+              class="profile__image"
+            />
+          </div>
+          <div class="profile__card">
+            <h2 class="profile__title">Jacques Cousteau</h2>
+            <button class="profile__button-edit"></button>
+            <p class="profile__subtitle">Explorador</p>
+          </div>
+
+          <button class="profile__button-add"></button>
+        </section>
+      </header>
+
+      <main class="grid__content page__container">
+        <template class="grid__template">
+          <div class="grid__card">
+            <button class="grid__card-delete"></button>
+            <img src="" alt="" class="grid__card-image" />
+            <div class="grid__card-text">
+              <h3 class="grid__card-title"></h3>
+              <img
+                src="./images/heart_icon.png"
+                alt="Like Button"
+                class="grid__button-heart button-heart-unliked"
+              />
+              <img
+                src="./images/heart-clicked.png"
+                alt="Like Button"
+                class="grid__button-heart button-heart-liked"
+              />
+            </div>
+          </div>
+        </template>
+      </main>
+
+      <footer class="footer page__container">
+        <p>&copy; 2024 Around The U.S.</p>
+      </footer>
+
+      <!-- POPUP EDIT PROFILE -->
+
+      <div class="popup__container container-profile">
+        <div class="popup__card">
+          <h3 class="popup__title">Editar perfil</h3>
+          <form class="popup__input input-profile" novalidate>
+            <div class="input__wrap">
+              <input
+                class="input__text input__text-name"
+                id="name"
+                type="text"
+                placeholder="Nome"
+                minlength="2"
+                maxlength="40"
+                required
+              />
+              <p class="input__errorMessage"></p>
+            </div>
+
+            <div class="input__wrap">
+              <input
+                class="input__text input__text-job"
+                id="job"
+                type="text"
+                placeholder="Sobre mim"
+                minlength="2"
+                maxlength="200"
+                required
+              />
+              <p class="input__errorMessage"></p>
+            </div>
+            <button
+              type="submit"
+              class="input__submit input__submit-save"
+              disabled
+            >
+              Salvar
+            </button>
+          </form>
+          <button
+            class="popup__button-close button-closeProfile"
+            draggable="true"
+          ></button>
+        </div>
+      </div>
+      <!--  -->
+      <!-- POPUP ADD IMAGE -->
+      <div class="popup__container container-image">
+        <div class="popup__card">
+          <h3 class="popup__title">Novo local</h3>
+          <form class="form-image">
+
+            <div class="input__wrap">
+              <input
+                class="input__text input__text-title"
+                id="title"
+                type="text"
+                placeholder="Título"
+                minlength="2"
+                maxlength=" 30"
+                required
+              />
+              <p class="input__errorMessage"></p>
+            </div>
+            <div class="input__wrap">
+              <input
+                class="input__text input__text-image"
+                id="url"
+                type="url"
+                placeholder="Link de imagem"
+                required
+              />
+              <p class="input__errorMessage"></p>
+            </div>
+            <button
+              type="submit"
+              class="input__submit input__submit-add"
+              disabled
+            >
+              Criar
+            </button>
+          </form>
+          <button
+            class="popup__button-close button-closeImage"
+            draggable="true"
+          ></button>
+        </div>
+      </div>
+      <!--  -->
+      <!-- POPUP IMAGE -->
+      <div class="popup__bigImage-container">
+        <div class="popup__bigImage-card">
+          <div class="popup__bigImage-cardContainer">
+            <button class="popoup__buttonClose-bigImage"></button>
+            <img class="popup__open-bigImage" src="" alt="" />
+            <p class="popup__subtitle-bigImage"></p>
+          </div>
+        </div>
+      </div>
+      <!--  -->
+    </div>
+    <script src="scripts/index.js"></script>
+    <script src="./scripts/validate.js"></script>
+  </body>
+</html>
