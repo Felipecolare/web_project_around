@@ -95,6 +95,7 @@
     color: rgba(255, 255, 255, 1);
     padding-top: 14px;
     padding-bottom: 18px;
+    width: 100%;
   }
   
   .input__submit:hover {
@@ -184,6 +185,21 @@
     max-width: 816px;
     width: 75vw;
   }
+
+  .popup__close { 
+    background-image: url(../images/close-icon.png);
+    background-size: 35px 35px;
+    width: 35px;
+    height: 35px;
+    border: none;
+    position: absolute;
+    right: -37px; 
+    top: -37px;
+    background-color: transparent;
+
+  }
+
+  
   
   @media screen and (max-width: 1024px) {
     .popup__bigImage-cardContainer {
@@ -232,7 +248,9 @@
       max-height: 540px;
     }
   
+
     .popup__subtitle-bigImage {
       max-width: 240px;
     }
   }
+
