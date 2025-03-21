@@ -61,30 +61,3 @@ function addErrorMessage(input, config) {
     // popupProfileButton: ".input__submit-save",
     // popupCardButton: ".input__submit-add",
   });
-
-  // Função para resetar a validação do formulário
-function resetValidation(formElement, config) {
-  const inputList = Array.from(formElement.querySelectorAll(config.inputSelector));
-  const buttonElement = formElement.querySelector(config.popupButton);
-  
-  inputList.forEach((inputElement) => {
-    const errorElement = inputElement.nextElementSibling;
-    inputElement.classList.remove(config.inputErrorClass);
-    errorElement.textContent = '';
-    errorElement.classList.remove(config.errorClass);
-  });
-  
-  disableButton(formElement, config);
-}
-
-// Exportando funções para uso em index.js
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = {
-    enableValidation,
-    resetValidation
-  };
-}
-
-// Alternativa usando export (para ES6 modules)
-// export { enableValidation, resetValidation };
-  
