@@ -1,3 +1,4 @@
+// EXISTING CODE FROM YOUR CURRENT INDEX.JS
 // VARIABLES
 const modalProfile = document.querySelector(".container-profile");
 const saveProfile = document.querySelector(".input__submit-save");
@@ -170,3 +171,204 @@ function addImageCard(event) {
 const formImage = document.querySelector('.form-image');
 
 formImage.addEventListener('submit', addImageCard);
+
+// NEW FEATURES FROM PASTE.TXT
+
+// Card class for object-oriented implementation
+class Card {
+  constructor(data, templateSelector) {
+    this._name = data.name;
+    this._link = data.link;
+    this._templateSelector = templateSelector;
+  }
+
+  _getTemplate() {
+    const cardTemplate = document.querySelector(this._templateSelector).content;
+    const cardElement = cardTemplate.querySelector(".grid__card").cloneNode(true);
+    return cardElement;
+  }
+
+  _setEventListeners() {
+    // Like button functionality
+    this._element.querySelectorAll(".grid__button-heart").forEach((buttonHeart) => {
+      buttonHeart.addEventListener("click", (evt) => {
+        if (evt.target.classList.contains("button-heart-unliked")) {
+          this._element.querySelector(".button-heart-liked").style.display = "block";
+          this._element.querySelector(".button-heart-unliked").style.display = "none";
+        } else {
+          this._element.querySelector(".button-heart-unliked").style.display = "block";
+          this._element.querySelector(".button-heart-liked").style.display = "none";
+        }
+      });
+    });
+
+    // Delete button functionality
+    this._element.querySelector(".grid__card-delete").addEventListener("click", () => {
+      this._element.remove();
+      this._element = null;
+    });
+
+    // Open large image popup
+    this._element.querySelector(".grid__card-image").addEventListener("click", () => {
+      openBigImage.setAttribute("src", this._link);
+      openBigImage.setAttribute("alt", this._name);
+      subtitleBigImage.textContent = this._name;
+      openPopup(modalBigImage);
+    });
+  }
+
+  generateCard() {
+    this._element = this._getTemplate();
+    this._setEventListeners();
+    
+    // Set card content
+    this._element.querySelector(".grid__card-title").textContent = this._name;
+    const cardImage = this._element.querySelector(".grid__card-image");
+    cardImage.setAttribute("src", this._link);
+    cardImage.setAttribute("alt", this._name);
+    
+    return this._element;
+  }
+}
+
+// Form validation class
+class FormValidator {
+  constructor(config, formElement) {
+    this._inputSelector = config.inputSelector;
+    this._submitButtonSelector = config.submitButtonSelector;
+    this._inactiveButtonClass = config.inactiveButtonClass;
+    this._inputErrorClass = config.inputErrorClass;
+    this._errorClass = config.errorClass;
+    this._formElement = formElement;
+    this._inputList = Array.from(this._formElement.querySelectorAll(this._inputSelector));
+    this._buttonElement = this._formElement.querySelector(this._submitButtonSelector);
+  }
+
+  _showInputError(inputElement, errorMessage) {
+    const errorElement = this._formElement.querySelector(`${this._errorClass}-${inputElement.id}`);
+    inputElement.classList.add(this._inputErrorClass);
+    errorElement.textContent = errorMessage;
+    errorElement.classList.add('input__errorMessage_active');
+  }
+
+  _hideInputError(inputElement) {
+    const errorElement = this._formElement.querySelector(`${this._errorClass}-${inputElement.id}`);
+    inputElement.classList.remove(this._inputErrorClass);
+    errorElement.classList.remove('input__errorMessage_active');
+    errorElement.textContent = '';
+  }
+
+  _checkInputValidity(inputElement) {
+    if (!inputElement.validity.valid) {
+      this._showInputError(inputElement, inputElement.validationMessage);
+    } else {
+      this._hideInputError(inputElement);
+    }
+  }
+
+  _hasInvalidInput() {
+    return this._inputList.some((inputElement) => {
+      return !inputElement.validity.valid;
+    });
+  }
+
+  _toggleButtonState() {
+    if (this._hasInvalidInput()) {
+      this._buttonElement.classList.add(this._inactiveButtonClass);
+      this._buttonElement.disabled = true;
+    } else {
+      this._buttonElement.classList.remove(this._inactiveButtonClass);
+      this._buttonElement.disabled = false;
+    }
+  }
+
+  _setEventListeners() {
+    this._toggleButtonState();
+
+    this._inputList.forEach((inputElement) => {
+      inputElement.addEventListener('input', () => {
+        this._checkInputValidity(inputElement);
+        this._toggleButtonState();
+      });
+    });
+  }
+
+  resetValidation() {
+    this._toggleButtonState();
+    
+    this._inputList.forEach((inputElement) => {
+      this._hideInputError(inputElement);
+    });
+  }
+
+  enableValidation() {
+    this._formElement.addEventListener('submit', (evt) => {
+      evt.preventDefault();
+    });
+    
+    this._setEventListeners();
+  }
+}
+
+// Utility functions for popups
+function openPopup(popupElement) {
+  popupElement.style.display = "block";
+  document.addEventListener('keydown', handleEscClose);
+}
+
+function closePopup(popupElement) {
+  popupElement.style.display = "none";
+  document.removeEventListener('keydown', handleEscClose);
+}
+
+function handleEscClose(evt) {
+  if (evt.key === "Escape") {
+    const openedPopup = document.querySelector('.popup-container[style="display: block;"]');
+    if (openedPopup) {
+      closePopup(openedPopup);
+    }
+  }
+}
+
+function setupCloseButtons() {
+  const closeButtons = document.querySelectorAll('.popup__close-button');
+  closeButtons.forEach((button) => {
+    const popup = button.closest('.popup-container');
+    button.addEventListener('click', () => closePopup(popup));
+  });
+}
+
+function setupOverlayCloseListeners() {
+  const popups = document.querySelectorAll('.popup-container');
+  popups.forEach((popup) => {
+    popup.addEventListener('click', (evt) => {
+      if (evt.target === popup) {
+        closePopup(popup);
+      }
+    });
+  });
+}
+
+// Initialize validation for existing forms
+const validationConfig = {
+  inputSelector: '.input__text',
+  submitButtonSelector: '.input__submit',
+  inactiveButtonClass: 'input__submit_inactive',
+  inputErrorClass: 'input__text_type_error',
+  errorClass: '.input__errorMessage'
+};
+
+// Initialize form validators if not already present
+if (typeof profileFormValidator === 'undefined') {
+  const profileFormValidator = new FormValidator(validationConfig, popupEditProfile);
+  profileFormValidator.enableValidation();
+}
+
+if (typeof imageFormValidator === 'undefined') {
+  const imageFormValidator = new FormValidator(validationConfig, formImage);
+  imageFormValidator.enableValidation();
+}
+
+// Setup popup close functionality
+setupCloseButtons();
+setupOverlayCloseListeners();
