@@ -12,7 +12,7 @@ const popupEditProfile = document.querySelector(".input-profile");
 const editButton = document.querySelector(".profile__button-edit");
 const modalImage = document.querySelector(".container-image");
 const addImage = document.querySelector(".input__submit-add");
-const closeAddButton = document.querySelector(".button-closeImage");
+const closeAddButton = document.querySelectorAll(".popup__close");
 const popupAddImage = document.querySelector(".input-image");
 const addImageButton = document.querySelector(".profile__button-add");
 const cards = document.querySelector(".grid__content");
@@ -30,7 +30,11 @@ function appearEditPopUp() {
 editButton.addEventListener("click", appearEditPopUp);
 // CLOSE POPUP - PROFILE EDIT
 function closeEditPopUp(event) {
+   console.log(event.target);
+   closePopup(modalProfile);
+  
   if (event.target == closeEditButton) {
+    console.log("entrou")
     // Substituindo pela função importada
     closePopup(modalProfile);
   }
@@ -39,7 +43,7 @@ function closeEditPopUp(event) {
     closePopup(modalProfile);
   }
 }
-closeEditButton.addEventListener("click", closeEditPopUp);
+
 modalProfile.addEventListener("click", closeEditPopUp);
 // Remoção da função closeEditPopupWithEsc pois já está em utils.js
 
@@ -58,7 +62,6 @@ function addProfileInfo(event) {
   // Substituindo pela função importada
   closePopup(modalProfile);
 }
-popupEditProfile.addEventListener("submit", addProfileInfo);
 // OPEN POPUP - ADD IMAGE
 function appearAddPopUp() {
   // Substituindo pela função importada
@@ -71,12 +74,16 @@ function closeAddPopUp(event) {
     // Substituindo pela função importada
     closePopup(modalImage);
   }
+  closePopup(modalImage);
+  closePopup(modalProfile);
   if (event.target == modalImage) {
     // Substituindo pela função importada
     closePopup(modalImage);
   }
 }
-closeAddButton.addEventListener("click", closeAddPopUp);
+closeAddButton.forEach(button=>{
+  button.addEventListener("click",closeAddPopUp);
+})
 modalImage.addEventListener("click", closeAddPopUp);
 // Remoção da função closeAddPopupWithEsc pois já está em utils.js
 
@@ -116,6 +123,7 @@ initialCards.forEach((cardData) => {
 });
 
 // Removida a função createCard pois agora utilizamos a classe Card
+
 
 // CLOSE POPUP BIG IMAGE
 function closeBigImagePopUp() {
