@@ -12,7 +12,7 @@ const editButton = document.querySelector(".profile__button-edit");
 const modalImage = document.querySelector(".container-image");
 const addImage = document.querySelector(".input__submit-add");
 const closeAddButton = document.querySelectorAll(".popup__close");
-const popupAddImage = document.querySelector(".input-image");
+const formImage = document.querySelector(".form-image"); // Corrigido para corresponder ao HTML
 const addImageButton = document.querySelector(".profile__button-add");
 const cards = document.querySelector(".grid__content");
 const inputImageTitle = document.querySelector(".input__text-title");
@@ -20,7 +20,7 @@ const inputImageUrl = document.querySelector(".input__text-image");
 const modalBigImage = document.querySelector(".popup__bigImage-container");
 const openBigImage = document.querySelector(".popup__open-bigImage");
 const subtitleBigImage = document.querySelector(".popup__subtitle-bigImage");
-const closeBigImage = document.querySelector(".popoup__buttonClose-bigImage");
+const closeBigImage = document.querySelector(".popup__buttonClose-bigImage"); // Corrigido para corresponder ao HTML
 
 // OPEN POPUP - PROFILE EDIT
 function appearEditPopUp() {
@@ -95,7 +95,11 @@ function appearAddPopUp() {
   openPopup(modalImage);
 }
 
-addImageButton.addEventListener("click", appearAddPopUp);
+if (addImageButton) {
+  addImageButton.addEventListener("click", appearAddPopUp);
+} else {
+  console.error("Botão de adicionar imagem não encontrado no DOM");
+}
 
 // CLOSE POPUP - ADD IMAGE
 function closeAddPopUp() {
@@ -103,7 +107,12 @@ function closeAddPopUp() {
 }
 
 closeAddButton.forEach(button => {
-  button.addEventListener("click", closeAddPopUp);
+  button.addEventListener("click", function() {
+    const popup = button.closest(".popup__container");
+    if (popup) {
+      closePopup(popup);
+    }
+  });
 });
 
 modalImage.addEventListener("click", function(event) {
@@ -151,7 +160,20 @@ initialCards.forEach((cardData) => {
 function closeBigImagePopUp() {
   closePopup(modalBigImage);
 }
-closeBigImage.addEventListener("click", closeBigImagePopUp);
+
+// Verificar se o elemento existe antes de adicionar o evento
+if (closeBigImage) {
+  closeBigImage.addEventListener("click", closeBigImagePopUp);
+} else {
+  console.error("Botão de fechar imagem grande não encontrado no DOM");
+}
+
+// Adicionar fechar ao clicar fora também para imagem grande
+modalBigImage.addEventListener("click", function(event) {
+  if (event.target === modalBigImage) {
+    closePopup(modalBigImage);
+  }
+});
 
 // ADD NEW CARD IMAGE
 function addImageCard(event) {
@@ -169,19 +191,23 @@ function addImageCard(event) {
     inputImageTitle.value = "";
     inputImageUrl.value = "";
   }
-  addImage.classList.add("formButton_disabled");
-  addImage.setAttribute("disabled", true);
+  if (addImage) {
+    addImage.classList.add("formButton_disabled");
+    addImage.setAttribute("disabled", true);
+  }
   
   closePopup(modalImage);
 }
 
-const formImage = document.querySelector('.form-image');
-
-formImage.addEventListener('submit', addImageCard);
+if (formImage) {
+  formImage.addEventListener('submit', addImageCard);
+} else {
+  console.error("Formulário de imagem não encontrado no DOM");
+}
 
 // Configuração de validação para os formulários
 const validationConfig = {
-  formSelector: '.popup__input',
+  formSelector: '.popup__input, .form-image', // Corrigido para incluir ambos os formulários
   inputSelector: '.input__text',
   submitButtonSelector: '.input__submit',
   inactiveButtonClass: 'formButton_disabled',
@@ -189,14 +215,19 @@ const validationConfig = {
   errorClass: '.input__errorMessage'
 };
 
-// Inicializar validadores de formulário
-const profileFormValidator = new FormValidator(validationConfig, popupEditProfile);
-profileFormValidator.enableValidation();
+// Inicializar validadores de formulário apenas se os elementos existirem
+const profileFormValidator = popupEditProfile ? new FormValidator(validationConfig, popupEditProfile) : null;
+if (profileFormValidator) {
+  profileFormValidator.enableValidation();
+}
 
-const imageFormValidator = new FormValidator(validationConfig, formImage);
-imageFormValidator.enableValidation();
+const imageFormValidator = formImage ? new FormValidator(validationConfig, formImage) : null;
+if (imageFormValidator) {
+  imageFormValidator.enableValidation();
+}
 
 // Adicionar logging para debug
 console.log('Botão de edição:', editButton);
 console.log('Formulário de perfil:', popupEditProfile);
 console.log('Botão de fechar perfil:', closeEditButton);
+console.log('Botão de fechar imagem grande:', closeBigImage);
