@@ -170,10 +170,12 @@
   }
   
   .popup__bigImage-card img {
-    max-width: 816px;
-    max-height: 540px;
-    width: 100%;
+    max-width: 75vw;
+    max-height: 75vh;
+    width: auto;
+    height: auto;
     object-fit: contain;
+
   }
 
   .popup__subtitle-bigImage {
@@ -199,7 +201,13 @@
 
   }
 
-  
+  .popup__bigImage-cardContainer {
+    max-width: 75vw;
+    max-height: 75vh;
+    width: auto;
+    height: auto;
+  }
+
   
   @media screen and (max-width: 1024px) {
     .popup__bigImage-cardContainer {
