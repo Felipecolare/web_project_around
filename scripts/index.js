@@ -1,14 +1,13 @@
-// EXISTING CODE FROM YOUR CURRENT INDEX.JS
 // Importações dos arquivos externos
 import Card from './card.js';
 import FormValidator from './formValidator.js';
 import { openPopup, closePopup } from './utils.js';
 
-// VARIABLES
+// VARIABLES - Corrigido para corresponder exatamente ao HTML
 const modalProfile = document.querySelector(".container-profile");
 const saveProfile = document.querySelector(".input__submit-save");
-const closeEditButton = document.querySelector(".button-closeProfile");
-const popupEditProfile = document.querySelector(".input-profile");
+const closeEditButton = document.querySelector(".container-profile .popup__close");
+const popupEditProfile = document.querySelector(".container-profile .popup__input");
 const editButton = document.querySelector(".profile__button-edit");
 const modalImage = document.querySelector(".container-image");
 const addImage = document.querySelector(".input__submit-add");
@@ -22,30 +21,50 @@ const modalBigImage = document.querySelector(".popup__bigImage-container");
 const openBigImage = document.querySelector(".popup__open-bigImage");
 const subtitleBigImage = document.querySelector(".popup__subtitle-bigImage");
 const closeBigImage = document.querySelector(".popoup__buttonClose-bigImage");
+
 // OPEN POPUP - PROFILE EDIT
 function appearEditPopUp() {
+  // Preencher os campos do formulário com os valores atuais
+  const name = document.querySelector(".profile__title");
+  const job = document.querySelector(".profile__subtitle");
+  const addName = document.querySelector(".input__text-name");
+  const addJob = document.querySelector(".input__text-job");
+  
+  addName.value = name.textContent;
+  addJob.value = job.textContent;
+  
+  // Resetar validação para o estado inicial correto
+  profileFormValidator.resetValidation();
+  
   // Substituindo pela função importada
   openPopup(modalProfile);
 }
-editButton.addEventListener("click", appearEditPopUp);
-// CLOSE POPUP - PROFILE EDIT
-function closeEditPopUp(event) {
-   console.log(event.target);
-   closePopup(modalProfile);
-  
-  if (event.target == closeEditButton) {
-    console.log("entrou")
-    // Substituindo pela função importada
-    closePopup(modalProfile);
-  }
-  if (event.target == modalProfile) {
-    // Substituindo pela função importada
-    closePopup(modalProfile);
-  }
+
+// Verificação se o botão existe antes de adicionar o evento
+if (editButton) {
+  editButton.addEventListener("click", appearEditPopUp);
+} else {
+  console.error("Botão de edição não encontrado no DOM");
 }
 
-modalProfile.addEventListener("click", closeEditPopUp);
-// Remoção da função closeEditPopupWithEsc pois já está em utils.js
+// CLOSE POPUP - PROFILE EDIT
+function closeEditPopUp() {
+  closePopup(modalProfile);
+}
+
+// Adicionar evento apenas se o elemento existir
+if (closeEditButton) {
+  closeEditButton.addEventListener("click", closeEditPopUp);
+} else {
+  console.error("Botão de fechar edição não encontrado no DOM");
+}
+
+// Fechar ao clicar fora
+modalProfile.addEventListener("click", function(event) {
+  if (event.target === modalProfile) {
+    closePopup(modalProfile);
+  }
+});
 
 // GET PROFILE INFOS FROM INPUT
 function addProfileInfo(event) {
@@ -54,38 +73,44 @@ function addProfileInfo(event) {
   const job = document.querySelector(".profile__subtitle");
   const addName = document.querySelector(".input__text-name");
   const addJob = document.querySelector(".input__text-job");
+  
   name.textContent = addName.value;
   job.textContent = addJob.value;
+  
   popupEditProfile.reset();
-  saveProfile.classList.add("formButton_disabled");
-  saveProfile.setAttribute("disabled", true);
-  // Substituindo pela função importada
+  // Não é necessário desabilitar o botão aqui, o FormValidator cuidará disso
+  
   closePopup(modalProfile);
 }
+
+// Vincular o evento de submissão ao formulário de edição de perfil
+if (popupEditProfile) {
+  popupEditProfile.addEventListener('submit', addProfileInfo);
+} else {
+  console.error("Formulário de edição de perfil não encontrado no DOM");
+}
+
 // OPEN POPUP - ADD IMAGE
 function appearAddPopUp() {
-  // Substituindo pela função importada
   openPopup(modalImage);
 }
+
 addImageButton.addEventListener("click", appearAddPopUp);
+
 // CLOSE POPUP - ADD IMAGE
-function closeAddPopUp(event) {
-  if (event.target == closeAddButton) {
-    // Substituindo pela função importada
-    closePopup(modalImage);
-  }
+function closeAddPopUp() {
   closePopup(modalImage);
-  closePopup(modalProfile);
-  if (event.target == modalImage) {
-    // Substituindo pela função importada
+}
+
+closeAddButton.forEach(button => {
+  button.addEventListener("click", closeAddPopUp);
+});
+
+modalImage.addEventListener("click", function(event) {
+  if (event.target === modalImage) {
     closePopup(modalImage);
   }
-}
-closeAddButton.forEach(button=>{
-  button.addEventListener("click",closeAddPopUp);
-})
-modalImage.addEventListener("click", closeAddPopUp);
-// Remoção da função closeAddPopupWithEsc pois já está em utils.js
+});
 
 // INITIAL IMAGES - GRID CARD
 const initialCards = [
@@ -122,12 +147,8 @@ initialCards.forEach((cardData) => {
   cards.prepend(cardElement);
 });
 
-// Removida a função createCard pois agora utilizamos a classe Card
-
-
 // CLOSE POPUP BIG IMAGE
 function closeBigImagePopUp() {
-  // Substituindo pela função importada
   closePopup(modalBigImage);
 }
 closeBigImage.addEventListener("click", closeBigImagePopUp);
@@ -150,7 +171,7 @@ function addImageCard(event) {
   }
   addImage.classList.add("formButton_disabled");
   addImage.setAttribute("disabled", true);
-  // Substituindo pela função importada
+  
   closePopup(modalImage);
 }
 
@@ -175,5 +196,7 @@ profileFormValidator.enableValidation();
 const imageFormValidator = new FormValidator(validationConfig, formImage);
 imageFormValidator.enableValidation();
 
-// Removidas as declarações redundantes de classes Card e FormValidator
-// Removidas as funções de utilidade que agora são importadas de utils.js
+// Adicionar logging para debug
+console.log('Botão de edição:', editButton);
+console.log('Formulário de perfil:', popupEditProfile);
+console.log('Botão de fechar perfil:', closeEditButton);
