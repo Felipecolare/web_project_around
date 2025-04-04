@@ -7,7 +7,7 @@ import { openPopup, closePopup } from './utils.js';
 const modalProfile = document.querySelector(".container-profile");
 const saveProfile = document.querySelector(".input__submit-save");
 const closeEditButton = document.querySelector(".container-profile .popup__close");
-const popupEditProfile = document.querySelector(".container-profile .popup__input");
+const popupEditProfile = document.querySelector(".container-profile .input-profile");
 const editButton = document.querySelector(".profile__button-edit");
 const modalImage = document.querySelector(".container-image");
 const addImage = document.querySelector(".input__submit-add");

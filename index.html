@@ -30,7 +30,7 @@
           </div>
           <div class="profile__card">
             <h2 class="profile__title">Jacques Cousteau</h2>
-            <button class="profile__button-edit"></button>
+            <button class="profile__button-edit"></button> <!-- Botão aqui -->
             <p class="profile__subtitle">Explorador</p>
           </div>
 
@@ -75,16 +75,16 @@
             <div class="input__wrap">
               <input
                 class="input__text input__text-name"
-                id="name"
+                id="name" 
                 type="text"
                 placeholder="Nome"
                 minlength="2"
                 maxlength="40"
                 required
               />
-              <p class="input__errorMessage"></p>
+              <p class="input__errorMessage" id="name-error"></p> <!-- ID adicionado -->
             </div>
-
+            
             <div class="input__wrap">
               <input
                 class="input__text input__text-job"
@@ -95,7 +95,7 @@
                 maxlength="200"
                 required
               />
-              <p class="input__errorMessage"></p>
+              <p class="input__errorMessage" id="job-error"></p> <!-- ID adicionado -->
             </div>
             <button
               type="submit"
