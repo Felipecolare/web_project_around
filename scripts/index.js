@@ -92,6 +92,13 @@ if (popupEditProfile) {
 
 // OPEN POPUP - ADD IMAGE
 function appearAddPopUp() {
+  // Resetar o formulário antes de abrir o popup
+  if (formImage) {
+    formImage.reset();
+    if (imageFormValidator) {
+      imageFormValidator.resetValidation();
+    }
+  }
   openPopup(modalImage);
 }
 
@@ -156,8 +163,6 @@ initialCards.forEach((cardData) => {
   cards.prepend(cardElement);
 });
 
-// Modifique esta parte no arquivo index.js
-
 // CLOSE POPUP BIG IMAGE
 function closeBigImagePopUp() {
   closePopup(modalBigImage);
@@ -178,28 +183,41 @@ modalBigImage.addEventListener("click", function(event) {
   }
 });
 
-// ADD NEW CARD IMAGE
+// ADD NEW CARD IMAGE - CORRIGIDO
 function addImageCard(event) {
   event.preventDefault();
-  if (inputImageTitle.value != "" && inputImageUrl.value != "") {
-    // Usado a classe Card em vez da função createCard
+  
+  // Verificar se ambos os campos estão preenchidos
+  if (inputImageTitle.value.trim() !== "" && inputImageUrl.value.trim() !== "") {
+    // Criar objeto com os dados do card
     const cardData = {
       name: inputImageTitle.value,
       link: inputImageUrl.value,
     };
-    const card = new Card(cardData, ".grid__template");
-    const cardElement = card.generateCard();
-    cards.prepend(cardElement);
     
-    inputImageTitle.value = "";
-    inputImageUrl.value = "";
+    try {
+      // Criar uma nova instância de Card
+      const card = new Card(cardData, ".grid__template");
+      const cardElement = card.generateCard();
+      
+      // Adicionar o card ao início da lista
+      cards.prepend(cardElement);
+      
+      // Resetar o formulário
+      formImage.reset();
+      
+      // Desabilitar o botão depois de adicionar
+      if (addImage) {
+        addImage.classList.add("formButton_disabled");
+        addImage.setAttribute("disabled", true);
+      }
+      
+      // Fechar o popup
+      closePopup(modalImage);
+    } catch (error) {
+      console.error("Erro ao criar card:", error);
+    }
   }
-  if (addImage) {
-    addImage.classList.add("formButton_disabled");
-    addImage.setAttribute("disabled", true);
-  }
-  
-  closePopup(modalImage);
 }
 
 if (formImage) {

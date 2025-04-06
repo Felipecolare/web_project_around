@@ -47,6 +47,26 @@ export default class Card {
     });
   }
 
+  // Adicionando método para verificar se uma imagem carrega corretamente
+  _checkImageLoading(imageElement) {
+    return new Promise((resolve, reject) => {
+      // Ouvinte para quando a imagem carregar com sucesso
+      imageElement.addEventListener('load', () => {
+        resolve(true);
+      });
+      
+      // Ouvinte para quando houver erro no carregamento
+      imageElement.addEventListener('error', () => {
+        console.error(`Erro ao carregar imagem: ${this._link}`);
+        // Definir uma imagem de fallback ou placeholder
+        imageElement.src = "./images/image-placeholder.jpg";
+        // Ou usar uma URL genérica de placeholder se não tiver uma imagem local
+        // imageElement.src = "https://via.placeholder.com/282";
+        resolve(false);
+      });
+    });
+  }
+
   generateCard() {
     this._element = this._getTemplate();
     this._setEventListeners();
@@ -54,8 +74,19 @@ export default class Card {
     // Set card content
     this._element.querySelector(".grid__card-title").textContent = this._name;
     const cardImage = this._element.querySelector(".grid__card-image");
-    cardImage.setAttribute("src", this._link);
-    cardImage.setAttribute("alt", this._name);
+    
+    // Verificar se a URL da imagem está vazia ou é inválida
+    if (!this._link || this._link.trim() === "") {
+      cardImage.src = "./images/image-placeholder.jpg"; // Use uma imagem de placeholder
+      // Ou usar uma URL genérica de placeholder se não tiver uma imagem local
+      // cardImage.src = "https://via.placeholder.com/282";
+    } else {
+      // Configurar a imagem e verificar se carrega
+      cardImage.src = this._link;
+      this._checkImageLoading(cardImage);
+    }
+    
+    cardImage.alt = this._name;
     
     return this._element;
   }
