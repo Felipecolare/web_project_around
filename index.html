@@ -11,6 +11,7 @@
   </head>
   <body>
     <div class="page">
+      <!-- Header e seção de perfil -->
       <header class="header page__container">
         <nav class="nav">
           <img
@@ -30,7 +31,7 @@
           </div>
           <div class="profile__card">
             <h2 class="profile__title">Jacques Cousteau</h2>
-            <button class="profile__button-edit"></button> <!-- Botão aqui -->
+            <button class="profile__button-edit"></button>
             <p class="profile__subtitle">Explorador</p>
           </div>
 
@@ -38,6 +39,7 @@
         </section>
       </header>
 
+      <!-- Grade de conteúdo principal -->
       <main class="grid__content page__container">
         <template class="grid__template">
           <div class="grid__card">
@@ -60,14 +62,13 @@
         </template>
       </main>
 
+      <!-- Footer -->
       <footer class="footer page__container">
         <p>&copy; 2024 Around The U.S.</p>
       </footer>
 
-      <!-- POPUP EDIT PROFILE -->
-
+      <!-- Popup para editar perfil -->
       <div class="popup__container container-profile">
-        
         <div class="popup__card"> 
           <button class="popup__close"></button>
           <h3 class="popup__title">Editar perfil</h3>
@@ -82,7 +83,7 @@
                 maxlength="40"
                 required
               />
-              <p class="input__errorMessage" id="name-error"></p> <!-- ID adicionado -->
+              <p class="input__errorMessage" id="name-error"></p>
             </div>
             
             <div class="input__wrap">
@@ -95,7 +96,7 @@
                 maxlength="200"
                 required
               />
-              <p class="input__errorMessage" id="job-error"></p> <!-- ID adicionado -->
+              <p class="input__errorMessage" id="job-error"></p>
             </div>
             <button
               type="submit"
@@ -107,14 +108,13 @@
           </form>
         </div>
       </div>
-      <!--  -->
-      <!-- POPUP ADD IMAGE -->
+      
+      <!-- Popup para adicionar imagem -->
       <div class="popup__container container-image">
         <div class="popup__card">
           <button class="popup__close"></button>
           <h3 class="popup__title">Novo local</h3>
           <form class="form-image">
-
             <div class="input__wrap">
               <input
                 class="input__text input__text-title"
@@ -122,10 +122,10 @@
                 type="text"
                 placeholder="Título"
                 minlength="2"
-                maxlength=" 30"
+                maxlength="30"
                 required
               />
-              <p class="input__errorMessage"></p>
+              <p class="input__errorMessage" id="title-error"></p>
             </div>
             <div class="input__wrap">
               <input
@@ -135,7 +135,7 @@
                 placeholder="Link de imagem"
                 required
               />
-              <p class="input__errorMessage"></p>
+              <p class="input__errorMessage" id="url-error"></p>
             </div>
             <button
               type="submit"
@@ -151,19 +151,20 @@
           ></button>
         </div>
       </div>
-      <!--  -->
-      <!-- POPUP IMAGE -->
+      
+      <!-- Popup para visualizar imagem ampliada -->
       <div class="popup__bigImage-container">
         <div class="popup__bigImage-card">
           <div class="popup__bigImage-cardContainer">
             <button class="popup__buttonClose-bigImage"></button>
-      <img class="popup__open-bigImage" src="" alt="" />
-      <p class="popup__subtitle-bigImage"></p>
+            <img class="popup__open-bigImage" src="" alt="" />
+            <p class="popup__subtitle-bigImage"></p>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
-      <!--  -->
-    </div>
+    
+    <!-- Script principal -->
     <script type="module" src="./scripts/index.js"></script>
   </body>
 </html>

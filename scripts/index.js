@@ -3,26 +3,40 @@ import Card from './card.js';
 import FormValidator from './formValidator.js';
 import { openPopup, closePopup } from './utils.js';
 
-// VARIABLES - Corrigido para corresponder exatamente ao HTML
+// -----------------------------------------------------
+// SELEÇÃO DE ELEMENTOS DO DOM
+// -----------------------------------------------------
+
+// Elementos do perfil
 const modalProfile = document.querySelector(".container-profile");
-const saveProfile = document.querySelector(".input__submit-save");
-const closeEditButton = document.querySelector(".container-profile .popup__close");
 const popupEditProfile = document.querySelector(".container-profile .input-profile");
 const editButton = document.querySelector(".profile__button-edit");
+const closeEditButton = document.querySelector(".container-profile .popup__close");
+const saveProfile = document.querySelector(".input__submit-save");
+
+// Elementos de adição de imagem
 const modalImage = document.querySelector(".container-image");
+const formImage = document.querySelector(".form-image");
+const addImageButton = document.querySelector(".profile__button-add");
 const addImage = document.querySelector(".input__submit-add");
 const closeAddButton = document.querySelectorAll(".popup__close");
-const formImage = document.querySelector(".form-image"); // Corrigido para corresponder ao HTML
-const addImageButton = document.querySelector(".profile__button-add");
-const cards = document.querySelector(".grid__content");
 const inputImageTitle = document.querySelector(".input__text-title");
 const inputImageUrl = document.querySelector(".input__text-image");
+
+// Elementos de visualização de imagem ampliada
 const modalBigImage = document.querySelector(".popup__bigImage-container");
 const openBigImage = document.querySelector(".popup__open-bigImage");
 const subtitleBigImage = document.querySelector(".popup__subtitle-bigImage");
-const closeBigImage = document.querySelector(".popup__buttonClose-bigImage"); // Corrigido para corresponder ao HTML
+const closeBigImage = document.querySelector(".popup__buttonClose-bigImage");
 
-// OPEN POPUP - PROFILE EDIT
+// Container para os cards
+const cards = document.querySelector(".grid__content");
+
+// -----------------------------------------------------
+// FUNCIONALIDADE DO PERFIL
+// -----------------------------------------------------
+
+// Abrir popup de edição de perfil
 function appearEditPopUp() {
   // Preencher os campos do formulário com os valores atuais
   const name = document.querySelector(".profile__title");
@@ -36,37 +50,16 @@ function appearEditPopUp() {
   // Resetar validação para o estado inicial correto
   profileFormValidator.resetValidation();
   
-  // Substituindo pela função importada
+  // Abrir o popup
   openPopup(modalProfile);
 }
 
-// Verificação se o botão existe antes de adicionar o evento
-if (editButton) {
-  editButton.addEventListener("click", appearEditPopUp);
-} else {
-  console.error("Botão de edição não encontrado no DOM");
-}
-
-// CLOSE POPUP - PROFILE EDIT
+// Fechar popup de edição de perfil
 function closeEditPopUp() {
   closePopup(modalProfile);
 }
 
-// Adicionar evento apenas se o elemento existir
-if (closeEditButton) {
-  closeEditButton.addEventListener("click", closeEditPopUp);
-} else {
-  console.error("Botão de fechar edição não encontrado no DOM");
-}
-
-// Fechar ao clicar fora
-modalProfile.addEventListener("click", function(event) {
-  if (event.target === modalProfile) {
-    closePopup(modalProfile);
-  }
-});
-
-// GET PROFILE INFOS FROM INPUT
+// Salvar informações do perfil
 function addProfileInfo(event) {
   event.preventDefault();
   const name = document.querySelector(".profile__title");
@@ -78,19 +71,15 @@ function addProfileInfo(event) {
   job.textContent = addJob.value;
   
   popupEditProfile.reset();
-  // Não é necessário desabilitar o botão aqui, o FormValidator cuidará disso
   
   closePopup(modalProfile);
 }
 
-// Vincular o evento de submissão ao formulário de edição de perfil
-if (popupEditProfile) {
-  popupEditProfile.addEventListener('submit', addProfileInfo);
-} else {
-  console.error("Formulário de edição de perfil não encontrado no DOM");
-}
+// -----------------------------------------------------
+// FUNCIONALIDADE DE ADICIONAR IMAGEM
+// -----------------------------------------------------
 
-// OPEN POPUP - ADD IMAGE
+// Abrir popup de adicionar imagem
 function appearAddPopUp() {
   // Resetar o formulário antes de abrir o popup
   if (formImage) {
@@ -102,88 +91,12 @@ function appearAddPopUp() {
   openPopup(modalImage);
 }
 
-if (addImageButton) {
-  addImageButton.addEventListener("click", appearAddPopUp);
-} else {
-  console.error("Botão de adicionar imagem não encontrado no DOM");
-}
-
-// CLOSE POPUP - ADD IMAGE
+// Fechar popup de adicionar imagem
 function closeAddPopUp() {
   closePopup(modalImage);
 }
 
-closeAddButton.forEach(button => {
-  button.addEventListener("click", function() {
-    const popup = button.closest(".popup__container");
-    if (popup) {
-      closePopup(popup);
-    }
-  });
-});
-
-modalImage.addEventListener("click", function(event) {
-  if (event.target === modalImage) {
-    closePopup(modalImage);
-  }
-});
-
-// INITIAL IMAGES - GRID CARD
-const initialCards = [
-  {
-    name: "Vale de Yosemite",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_yosemite.jpg",
-  },
-  {
-    name: "Lago Louise",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lake-louise.jpg",
-  },
-  {
-    name: "Montanhas Carecas",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_bald-mountains.jpg",
-  },
-  {
-    name: "Latemar",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_latemar.jpg",
-  },
-  {
-    name: "Parque Nacional da Vanoise ",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_vanoise.jpg",
-  },
-  {
-    name: "Lago di Braies",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lago.jpg",
-  },
-];
-
-// CARDS IMAGE GRID - Alterado para usar a classe Card importada
-initialCards.forEach((cardData) => {
-  const card = new Card(cardData, ".grid__template");
-  const cardElement = card.generateCard();
-  cards.prepend(cardElement);
-});
-
-// CLOSE POPUP BIG IMAGE
-function closeBigImagePopUp() {
-  closePopup(modalBigImage);
-}
-
-// Verificar se o elemento existe antes de adicionar o evento
-if (closeBigImage) {
-  closeBigImage.addEventListener("click", closeBigImagePopUp);
-} else {
-  console.error("Botão de fechar imagem grande não encontrado no DOM");
-}
-
-// Ajuste o event listener para fechar ao clicar fora da imagem
-modalBigImage.addEventListener("click", function(event) {
-  // Verifica se o clique foi diretamente no container do fundo (não na imagem ou nos elementos internos)
-  if (event.target === modalBigImage || event.target.classList.contains('popup__bigImage-card')) {
-    closePopup(modalBigImage);
-  }
-});
-
-// ADD NEW CARD IMAGE - CORRIGIDO
+// Adicionar nova imagem
 function addImageCard(event) {
   event.preventDefault();
   
@@ -220,15 +133,53 @@ function addImageCard(event) {
   }
 }
 
-if (formImage) {
-  formImage.addEventListener('submit', addImageCard);
-} else {
-  console.error("Formulário de imagem não encontrado no DOM");
+// -----------------------------------------------------
+// FUNCIONALIDADE DE IMAGEM AMPLIADA
+// -----------------------------------------------------
+
+// Fechar popup de imagem ampliada
+function closeBigImagePopUp() {
+  closePopup(modalBigImage);
 }
 
-// Configuração de validação para os formulários
+// -----------------------------------------------------
+// DADOS INICIAIS
+// -----------------------------------------------------
+
+// Carregamento inicial de imagens
+const initialCards = [
+  {
+    name: "Vale de Yosemite",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_yosemite.jpg",
+  },
+  {
+    name: "Lago Louise",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lake-louise.jpg",
+  },
+  {
+    name: "Montanhas Carecas",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_bald-mountains.jpg",
+  },
+  {
+    name: "Latemar",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_latemar.jpg",
+  },
+  {
+    name: "Parque Nacional da Vanoise ",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_vanoise.jpg",
+  },
+  {
+    name: "Lago di Braies",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lago.jpg",
+  },
+];
+
+// -----------------------------------------------------
+// CONFIGURAÇÃO DE VALIDAÇÃO
+// -----------------------------------------------------
+
 const validationConfig = {
-  formSelector: '.popup__input, .form-image', // Corrigido para incluir ambos os formulários
+  formSelector: '.popup__input, .form-image',
   inputSelector: '.input__text',
   submitButtonSelector: '.input__submit',
   inactiveButtonClass: 'formButton_disabled',
@@ -236,7 +187,11 @@ const validationConfig = {
   errorClass: '.input__errorMessage'
 };
 
-// Inicializar validadores de formulário apenas se os elementos existirem
+// -----------------------------------------------------
+// INICIALIZAÇÃO
+// -----------------------------------------------------
+
+// Inicializar validadores de formulário
 const profileFormValidator = popupEditProfile ? new FormValidator(validationConfig, popupEditProfile) : null;
 if (profileFormValidator) {
   profileFormValidator.enableValidation();
@@ -247,7 +202,84 @@ if (imageFormValidator) {
   imageFormValidator.enableValidation();
 }
 
-// Adicionar logging para debug
+// Adicionar os cards iniciais
+initialCards.forEach((cardData) => {
+  const card = new Card(cardData, ".grid__template");
+  const cardElement = card.generateCard();
+  cards.prepend(cardElement);
+});
+
+// -----------------------------------------------------
+// EVENT LISTENERS
+// -----------------------------------------------------
+
+// Event listeners para o perfil
+if (editButton) {
+  editButton.addEventListener("click", appearEditPopUp);
+} else {
+  console.error("Botão de edição não encontrado no DOM");
+}
+
+if (closeEditButton) {
+  closeEditButton.addEventListener("click", closeEditPopUp);
+} else {
+  console.error("Botão de fechar edição não encontrado no DOM");
+}
+
+if (popupEditProfile) {
+  popupEditProfile.addEventListener('submit', addProfileInfo);
+} else {
+  console.error("Formulário de edição de perfil não encontrado no DOM");
+}
+
+modalProfile.addEventListener("click", function(event) {
+  if (event.target === modalProfile) {
+    closePopup(modalProfile);
+  }
+});
+
+// Event listeners para adicionar imagem
+if (addImageButton) {
+  addImageButton.addEventListener("click", appearAddPopUp);
+} else {
+  console.error("Botão de adicionar imagem não encontrado no DOM");
+}
+
+closeAddButton.forEach(button => {
+  button.addEventListener("click", function() {
+    const popup = button.closest(".popup__container");
+    if (popup) {
+      closePopup(popup);
+    }
+  });
+});
+
+modalImage.addEventListener("click", function(event) {
+  if (event.target === modalImage) {
+    closePopup(modalImage);
+  }
+});
+
+if (formImage) {
+  formImage.addEventListener('submit', addImageCard);
+} else {
+  console.error("Formulário de imagem não encontrado no DOM");
+}
+
+// Event listeners para imagem ampliada
+if (closeBigImage) {
+  closeBigImage.addEventListener("click", closeBigImagePopUp);
+} else {
+  console.error("Botão de fechar imagem grande não encontrado no DOM");
+}
+
+modalBigImage.addEventListener("click", function(event) {
+  if (event.target === modalBigImage || event.target.classList.contains('popup__bigImage-card')) {
+    closePopup(modalBigImage);
+  }
+});
+
+// Logging para debug
 console.log('Botão de edição:', editButton);
 console.log('Formulário de perfil:', popupEditProfile);
 console.log('Botão de fechar perfil:', closeEditButton);
