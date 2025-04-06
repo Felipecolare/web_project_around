@@ -156,6 +156,8 @@ initialCards.forEach((cardData) => {
   cards.prepend(cardElement);
 });
 
+// Modifique esta parte no arquivo index.js
+
 // CLOSE POPUP BIG IMAGE
 function closeBigImagePopUp() {
   closePopup(modalBigImage);
@@ -168,9 +170,10 @@ if (closeBigImage) {
   console.error("Botão de fechar imagem grande não encontrado no DOM");
 }
 
-// Adicionar fechar ao clicar fora também para imagem grande
+// Ajuste o event listener para fechar ao clicar fora da imagem
 modalBigImage.addEventListener("click", function(event) {
-  if (event.target === modalBigImage) {
+  // Verifica se o clique foi diretamente no container do fundo (não na imagem ou nos elementos internos)
+  if (event.target === modalBigImage || event.target.classList.contains('popup__bigImage-card')) {
     closePopup(modalBigImage);
   }
 });
