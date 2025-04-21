@@ -1,6 +1,6 @@
 // PopupWithForm.js - Classe para popups com formulários, estende a classe Popup
 
-import Popup from './Popup.js';
+import Popup from './popup.js';
 
 export default class PopupWithForm extends Popup {
   constructor(popupSelector, submitCallback) {

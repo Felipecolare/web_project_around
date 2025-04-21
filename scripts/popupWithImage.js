@@ -1,6 +1,6 @@
 // PopupWithImage.js - Classe para popups de imagem, estende a classe Popup
 
-import Popup from './Popup.js';
+import Popup from './popup.js';
 
 export default class PopupWithImage extends Popup {
   constructor(popupSelector) {

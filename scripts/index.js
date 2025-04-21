@@ -1,8 +1,8 @@
 // Importações dos arquivos externos
 import Card from './card.js';
 import FormValidator from './formValidator.js';
-import Section from './Section.js';
-import Popup from './Popup.js';
+import Section from './section.js';
+import Popup from './popup.js';
 import PopupWithImage from './popupWithImage.js';
 import PopupWithForm from './popupWithForm.js';
 import UserInfo from './userInfo.js';
