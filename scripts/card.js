@@ -2,10 +2,11 @@
 import { openPopup } from './utils.js';
 
 export default class Card {
-  constructor(data, templateSelector) {
+  constructor(data, templateSelector, handleCardClick = null) {
     this._name = data.name;
     this._link = data.link;
     this._templateSelector = templateSelector;
+    this._handleCardClick = handleCardClick;
   }
 
   _getTemplate() {
@@ -35,15 +36,21 @@ export default class Card {
     });
 
     // Open large image popup
-    const modalBigImage = document.querySelector(".popup__bigImage-container");
-    const openBigImage = document.querySelector(".popup__open-bigImage");
-    const subtitleBigImage = document.querySelector(".popup__subtitle-bigImage");
-    
     this._element.querySelector(".grid__card-image").addEventListener("click", () => {
-      openBigImage.setAttribute("src", this._link);
-      openBigImage.setAttribute("alt", this._name);
-      subtitleBigImage.textContent = this._name;
-      openPopup(modalBigImage);
+      if (this._handleCardClick) {
+        // Usa o callback se fornecido
+        this._handleCardClick(this._name, this._link);
+      } else {
+        // Comportamento original se não tiver callback
+        const modalBigImage = document.querySelector(".popup__bigImage-container");
+        const openBigImage = document.querySelector(".popup__open-bigImage");
+        const subtitleBigImage = document.querySelector(".popup__subtitle-bigImage");
+        
+        openBigImage.setAttribute("src", this._link);
+        openBigImage.setAttribute("alt", this._name);
+        subtitleBigImage.textContent = this._name;
+        openPopup(modalBigImage);
+      }
     });
   }
 

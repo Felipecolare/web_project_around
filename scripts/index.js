@@ -1,11 +1,16 @@
 // Importações dos arquivos externos
 import Card from './card.js';
 import FormValidator from './formValidator.js';
+import Section from './Section.js';
+import Popup from './Popup.js';
+import PopupWithImage from './popupWithImage.js';
+import PopupWithForm from './popupWithForm.js';
+import UserInfo from './userInfo.js';
 import { openPopup, closePopup } from './utils.js';
 
 // -----------------------------------------------------
-// SELEÇÃO DE ELEMENTOS DO DOM
-// -----------------------------------------------------
+// DADOS INICIAIS
+// -------------------------------------
 
 // Elementos do perfil
 const modalProfile = document.querySelector(".container-profile");
