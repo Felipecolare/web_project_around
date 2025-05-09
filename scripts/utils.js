@@ -1,29 +1,22 @@
-// utils.js - Funções de utilidade para manipulação de popups
+// utils.js - Funções utilitárias para manipulação do DOM e gerenciamento de popups
 
-/**
- * Abre um popup adicionando uma classe para exibição
- * @param {HTMLElement} popup - Elemento do popup a ser aberto
- */
-export function openPopup(popup) {
-  popup.classList.add('popup_opened');
-  popup.style.display = "block";
+// Função para abrir um popup 
+export function openPopup(popupElement) {
+  popupElement.classList.add('popup_opened');
+  popupElement.style.display = "block";
+  // Adicionar event listener para fechar com Escape
   document.addEventListener('keydown', handleEscClose);
 }
 
-/**
- * Fecha um popup removendo a classe de exibição
- * @param {HTMLElement} popup - Elemento do popup a ser fechado
- */
-export function closePopup(popup) {
-  popup.classList.remove('popup_opened');
-  popup.style.display = "none";
+// Função para fechar um popup
+export function closePopup(popupElement) {
+  popupElement.classList.remove('popup_opened');
+  popupElement.style.display = "none";
+  // Remover event listener para evitar vazamento de memória
   document.removeEventListener('keydown', handleEscClose);
 }
 
-/**
- * Manipulador de evento para fechar popups com a tecla Escape
- * @param {KeyboardEvent} evt - Evento de teclado
- */
+// Função para lidar com fechamento por Escape
 function handleEscClose(evt) {
   if (evt.key === 'Escape') {
     const openedPopup = document.querySelector('.popup_opened');

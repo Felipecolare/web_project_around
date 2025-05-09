@@ -56,6 +56,7 @@ export default class FormValidator {
   }
 
   _setEventListeners() {
+    // Primeiro configuramos o estado inicial do botão
     this._toggleButtonState();
 
     this._inputList.forEach((inputElement) => {
@@ -75,10 +76,22 @@ export default class FormValidator {
   }
 
   resetValidation() {
+    // Limpar todos os erros
     this._inputList.forEach((inputElement) => {
       this._hideInputError(inputElement);
     });
 
-    this._toggleButtonState();
+    // Verificar se os campos preenchidos são válidos
+    const hasValues = this._inputList.some(input => input.value.trim() !== '');
+    const allValid = !this._hasInvalidInput();
+    
+    // Se tiver valores e tudo for válido, habilitar botão, caso contrário desabilitar
+    if (hasValues && allValid) {
+      this._buttonElement.classList.remove(this._inactiveButtonClass);
+      this._buttonElement.removeAttribute('disabled');
+    } else {
+      this._buttonElement.classList.add(this._inactiveButtonClass);
+      this._buttonElement.setAttribute('disabled', true);
+    }
   }
 }

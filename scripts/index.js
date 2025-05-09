@@ -2,28 +2,40 @@
 import Card from './card.js';
 import FormValidator from './formValidator.js';
 import Section from './section.js';
-import Popup from './popup.js';
-import PopupWithImage from './popupWithImage.js';
-import PopupWithForm from './popupWithForm.js';
-import UserInfo from './userInfo.js';
+import Api from './api.js';
 import { openPopup, closePopup } from './utils.js';
 
 // -----------------------------------------------------
-// DADOS INICIAIS
-// -------------------------------------
+// CONFIGURAÇÃO DA API
+// -----------------------------------------------------
+const token = 'd5a7c3b5-7db3-4a0a-b15e-29868a98a8e2'; // Substitua pelo seu token real
 
+// Inicialização da API
+const api = new Api({
+  baseUrl: 'https://around-api.pt-br.tripleten-services.com/v1',
+  headers: {
+    authorization: token,
+    'Content-Type': 'application/json'
+  }
+});
+
+// -----------------------------------------------------
+// ELEMENTOS DO DOM
+// -----------------------------------------------------
 // Elementos do perfil
 const modalProfile = document.querySelector(".container-profile");
 const popupEditProfile = document.querySelector(".container-profile .input-profile");
 const editButton = document.querySelector(".profile__button-edit");
 const closeEditButton = document.querySelector(".container-profile .popup__close");
-const saveProfile = document.querySelector(".input__submit-save");
+const profileNameInput = document.querySelector(".input__text-name");
+const profileJobInput = document.querySelector(".input__text-job");
+const profileTitle = document.querySelector(".profile__title");
+const profileSubtitle = document.querySelector(".profile__subtitle");
 
 // Elementos de adição de imagem
 const modalImage = document.querySelector(".container-image");
 const formImage = document.querySelector(".form-image");
 const addImageButton = document.querySelector(".profile__button-add");
-const addImage = document.querySelector(".input__submit-add");
 const closeAddButton = document.querySelectorAll(".popup__close");
 const inputImageTitle = document.querySelector(".input__text-title");
 const inputImageUrl = document.querySelector(".input__text-image");
@@ -34,155 +46,22 @@ const openBigImage = document.querySelector(".popup__open-bigImage");
 const subtitleBigImage = document.querySelector(".popup__subtitle-bigImage");
 const closeBigImage = document.querySelector(".popup__buttonClose-bigImage");
 
+// Elemento popup de confirmação
+const confirmDeletePopup = document.querySelector('.popup__container_type_confirm');
+const confirmDeleteButton = document.querySelector('.popup__confirm-button');
+
 // Container para os cards
-const cards = document.querySelector(".grid__content");
+const cardsContainer = document.querySelector(".grid__content");
 
 // -----------------------------------------------------
-// FUNCIONALIDADE DO PERFIL
+// VARIÁVEIS DE ESTADO
 // -----------------------------------------------------
-
-// Abrir popup de edição de perfil
-function appearEditPopUp() {
-  // Preencher os campos do formulário com os valores atuais
-  const name = document.querySelector(".profile__title");
-  const job = document.querySelector(".profile__subtitle");
-  const addName = document.querySelector(".input__text-name");
-  const addJob = document.querySelector(".input__text-job");
-  
-  addName.value = name.textContent;
-  addJob.value = job.textContent;
-  
-  // Resetar validação para o estado inicial correto
-  profileFormValidator.resetValidation();
-  
-  // Abrir o popup
-  openPopup(modalProfile);
-}
-
-// Fechar popup de edição de perfil
-function closeEditPopUp() {
-  closePopup(modalProfile);
-}
-
-// Salvar informações do perfil
-function addProfileInfo(event) {
-  event.preventDefault();
-  const name = document.querySelector(".profile__title");
-  const job = document.querySelector(".profile__subtitle");
-  const addName = document.querySelector(".input__text-name");
-  const addJob = document.querySelector(".input__text-job");
-  
-  name.textContent = addName.value;
-  job.textContent = addJob.value;
-  
-  popupEditProfile.reset();
-  
-  closePopup(modalProfile);
-}
-
-// -----------------------------------------------------
-// FUNCIONALIDADE DE ADICIONAR IMAGEM
-// -----------------------------------------------------
-
-// Abrir popup de adicionar imagem
-function appearAddPopUp() {
-  // Resetar o formulário antes de abrir o popup
-  if (formImage) {
-    formImage.reset();
-    if (imageFormValidator) {
-      imageFormValidator.resetValidation();
-    }
-  }
-  openPopup(modalImage);
-}
-
-// Fechar popup de adicionar imagem
-function closeAddPopUp() {
-  closePopup(modalImage);
-}
-
-// Adicionar nova imagem
-function addImageCard(event) {
-  event.preventDefault();
-  
-  // Verificar se ambos os campos estão preenchidos
-  if (inputImageTitle.value.trim() !== "" && inputImageUrl.value.trim() !== "") {
-    // Criar objeto com os dados do card
-    const cardData = {
-      name: inputImageTitle.value,
-      link: inputImageUrl.value,
-    };
-    
-    try {
-      // Criar uma nova instância de Card
-      const card = new Card(cardData, ".grid__template");
-      const cardElement = card.generateCard();
-      
-      // Adicionar o card ao início da lista
-      cards.prepend(cardElement);
-      
-      // Resetar o formulário
-      formImage.reset();
-      
-      // Desabilitar o botão depois de adicionar
-      if (addImage) {
-        addImage.classList.add("formButton_disabled");
-        addImage.setAttribute("disabled", true);
-      }
-      
-      // Fechar o popup
-      closePopup(modalImage);
-    } catch (error) {
-      console.error("Erro ao criar card:", error);
-    }
-  }
-}
-
-// -----------------------------------------------------
-// FUNCIONALIDADE DE IMAGEM AMPLIADA
-// -----------------------------------------------------
-
-// Fechar popup de imagem ampliada
-function closeBigImagePopUp() {
-  closePopup(modalBigImage);
-}
-
-// -----------------------------------------------------
-// DADOS INICIAIS
-// -----------------------------------------------------
-
-// Carregamento inicial de imagens
-const initialCards = [
-  {
-    name: "Vale de Yosemite",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_yosemite.jpg",
-  },
-  {
-    name: "Lago Louise",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lake-louise.jpg",
-  },
-  {
-    name: "Montanhas Carecas",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_bald-mountains.jpg",
-  },
-  {
-    name: "Latemar",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_latemar.jpg",
-  },
-  {
-    name: "Parque Nacional da Vanoise ",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_vanoise.jpg",
-  },
-  {
-    name: "Lago di Braies",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lago.jpg",
-  },
-];
+let currentUserId = null;
+let cardToDelete = null;
 
 // -----------------------------------------------------
 // CONFIGURAÇÃO DE VALIDAÇÃO
 // -----------------------------------------------------
-
 const validationConfig = {
   formSelector: '.popup__input, .form-image',
   inputSelector: '.input__text',
@@ -192,100 +71,313 @@ const validationConfig = {
   errorClass: '.input__errorMessage'
 };
 
-// -----------------------------------------------------
-// INICIALIZAÇÃO
-// -----------------------------------------------------
-
 // Inicializar validadores de formulário
-const profileFormValidator = popupEditProfile ? new FormValidator(validationConfig, popupEditProfile) : null;
-if (profileFormValidator) {
-  profileFormValidator.enableValidation();
+const profileFormValidator = new FormValidator(validationConfig, popupEditProfile);
+profileFormValidator.enableValidation();
+
+const imageFormValidator = new FormValidator(validationConfig, formImage);
+imageFormValidator.enableValidation();
+
+// -----------------------------------------------------
+// FUNÇÕES DO PERFIL
+// -----------------------------------------------------
+function appearEditPopUp() {
+  // Preencher formulário com valores atuais
+  profileNameInput.value = profileTitle.textContent;
+  profileJobInput.value = profileSubtitle.textContent;
+  
+  // Resetar a validação
+  profileFormValidator.resetValidation();
+  
+  // Abrir o popup
+  openPopup(modalProfile);
 }
 
-const imageFormValidator = formImage ? new FormValidator(validationConfig, formImage) : null;
-if (imageFormValidator) {
-  imageFormValidator.enableValidation();
+function closeEditPopUp() {
+  closePopup(modalProfile);
 }
 
-// Adicionar os cards iniciais
-initialCards.forEach((cardData) => {
-  const card = new Card(cardData, ".grid__template");
-  const cardElement = card.generateCard();
-  cards.prepend(cardElement);
-});
+function handleProfileFormSubmit(event) {
+  event.preventDefault();
+  
+  const saveButton = event.target.querySelector(".input__submit");
+  const originalText = saveButton.textContent;
+  saveButton.textContent = "Salvando...";
+  
+  api.updateUserInfo({
+    name: profileNameInput.value,
+    about: profileJobInput.value
+  })
+  .then(data => {
+    // Atualizar a interface
+    profileTitle.textContent = data.name;
+    profileSubtitle.textContent = data.about;
+    closePopup(modalProfile);
+  })
+  .catch(error => {
+    console.error("Erro ao atualizar perfil:", error);
+  })
+  .finally(() => {
+    saveButton.textContent = originalText;
+  });
+}
+
+// -----------------------------------------------------
+// FUNÇÕES DE CARTÕES
+// -----------------------------------------------------
+function createCard(cardData) {
+  // Verificar se existem os dados necessários
+  if (!cardData || !cardData.name || !cardData.link) {
+    console.error("Dados de cartão inválidos:", cardData);
+    return null;
+  }
+  
+  // Obter o elemento do template
+  const cardTemplate = document.querySelector(".grid__template").content;
+  const cardElement = cardTemplate.querySelector(".grid__card").cloneNode(true);
+  
+  // Preencher dados do cartão
+  const cardTitle = cardElement.querySelector(".grid__card-title");
+  const cardImage = cardElement.querySelector(".grid__card-image");
+  const cardLikeButton = cardElement.querySelector(".button-heart-unliked");
+  const cardLikedButton = cardElement.querySelector(".button-heart-liked");
+  const cardDeleteButton = cardElement.querySelector(".grid__card-delete");
+  
+  // Definir conteúdo e atributos
+  cardTitle.textContent = cardData.name;
+  cardImage.src = cardData.link;
+  cardImage.alt = cardData.name;
+  
+  // Armazenar ID do cartão para operações de API
+  cardElement.dataset.id = cardData._id;
+  
+  // Verificar se o cartão é do usuário atual
+  const isOwner = cardData.owner === currentUserId;
+  
+  // Mostrar/ocultar botão de exclusão
+  if (!isOwner) {
+    cardDeleteButton.style.display = 'none';
+  }
+  
+  // Verificar se o cartão está curtido
+  const isLiked = cardData.likes && Array.isArray(cardData.likes) && 
+                  cardData.likes.some(userId => userId === currentUserId);
+  
+  // Configurar estado visual do botão de like
+  if (isLiked) {
+    cardLikedButton.style.display = "block";
+    cardLikeButton.style.display = "none";
+  } else {
+    cardLikeButton.style.display = "block";
+    cardLikedButton.style.display = "none";
+  }
+  
+  // Adicionar event listeners
+  // 1. Abrir imagem ampliada
+  cardImage.addEventListener("click", () => {
+    openBigImage.src = cardData.link;
+    openBigImage.alt = cardData.name;
+    subtitleBigImage.textContent = cardData.name;
+    openPopup(modalBigImage);
+  });
+  
+  // 2. Botão de like
+  [cardLikeButton, cardLikedButton].forEach(button => {
+    button.addEventListener("click", () => {
+      const isCurrentlyLiked = cardLikedButton.style.display === "block";
+      const likeAction = isCurrentlyLiked ? api.removeLike.bind(api) : api.addLike.bind(api);
+      
+      likeAction(cardData._id)
+        .then(() => {
+          // Alternar a visualização dos botões
+          if (isCurrentlyLiked) {
+            cardLikeButton.style.display = "block";
+            cardLikedButton.style.display = "none";
+          } else {
+            cardLikedButton.style.display = "block";
+            cardLikeButton.style.display = "none";
+          }
+        })
+        .catch(error => {
+          console.error(`Erro ao ${isCurrentlyLiked ? "remover" : "adicionar"} like:`, error);
+        });
+    });
+  });
+  
+  // 3. Botão de excluir
+  if (isOwner) {
+    cardDeleteButton.addEventListener("click", () => {
+      // Armazenar referência ao cartão para exclusão
+      cardToDelete = cardElement;
+      // Abrir popup de confirmação
+      openPopup(confirmDeletePopup);
+    });
+  }
+  
+  return cardElement;
+}
+
+function handleConfirmDelete() {
+  // Verificar se temos um cartão para excluir
+  if (!cardToDelete) {
+    closePopup(confirmDeletePopup);
+    return;
+  }
+  
+  const cardId = cardToDelete.dataset.id;
+  const originalText = confirmDeleteButton.textContent;
+  confirmDeleteButton.textContent = "Excluindo...";
+  
+  api.deleteCard(cardId)
+    .then(() => {
+      // Remover o cartão do DOM
+      cardToDelete.remove();
+      // Limpar referência
+      cardToDelete = null;
+      // Fechar popup
+      closePopup(confirmDeletePopup);
+    })
+    .catch(error => {
+      console.error("Erro ao excluir cartão:", error);
+    })
+    .finally(() => {
+      confirmDeleteButton.textContent = originalText;
+    });
+}
+
+// -----------------------------------------------------
+// FUNÇÕES DO POPUP DE ADICIONAR CARTÃO
+// -----------------------------------------------------
+function appearAddPopUp() {
+  // Resetar o formulário
+  formImage.reset();
+  imageFormValidator.resetValidation();
+  openPopup(modalImage);
+}
+
+function closeAddPopUp() {
+  closePopup(modalImage);
+}
+
+function handleAddCard(event) {
+  event.preventDefault();
+  
+  const submitButton = event.target.querySelector(".input__submit");
+  const originalText = submitButton.textContent;
+  submitButton.textContent = "Criando...";
+  
+  api.addCard({
+    name: inputImageTitle.value,
+    link: inputImageUrl.value
+  })
+  .then(newCard => {
+    const cardElement = createCard(newCard);
+    if (cardElement) {
+      cardsContainer.prepend(cardElement);
+    }
+    closePopup(modalImage);
+    formImage.reset();
+  })
+  .catch(error => {
+    console.error("Erro ao adicionar cartão:", error);
+  })
+  .finally(() => {
+    submitButton.textContent = originalText;
+  });
+}
+
+// -----------------------------------------------------
+// FUNÇÃO DE FECHAR POPUP DE IMAGEM AMPLIADA
+// -----------------------------------------------------
+function closeBigImagePopUp() {
+  closePopup(modalBigImage);
+}
+
+// -----------------------------------------------------
+// CARREGAR DADOS INICIAIS
+// -----------------------------------------------------
+api.getAppInfo()
+  .then(([userData, initialCards]) => {
+    // Armazenar ID do usuário
+    currentUserId = userData._id;
+    
+    // Atualizar perfil
+    profileTitle.textContent = userData.name;
+    profileSubtitle.textContent = userData.about;
+    
+    // Renderizar cards
+    initialCards.forEach(cardData => {
+      const cardElement = createCard(cardData);
+      if (cardElement) {
+        cardsContainer.append(cardElement);
+      }
+    });
+  })
+  .catch(error => {
+    console.error("Erro ao carregar dados iniciais:", error);
+  });
 
 // -----------------------------------------------------
 // EVENT LISTENERS
 // -----------------------------------------------------
+// Popups de perfil
+editButton.addEventListener("click", appearEditPopUp);
+closeEditButton.addEventListener("click", closeEditPopUp);
+popupEditProfile.addEventListener("submit", handleProfileFormSubmit);
 
-// Event listeners para o perfil
-if (editButton) {
-  editButton.addEventListener("click", appearEditPopUp);
-} else {
-  console.error("Botão de edição não encontrado no DOM");
-}
+// Popup de adicionar cartão
+addImageButton.addEventListener("click", appearAddPopUp);
+formImage.addEventListener("submit", handleAddCard);
 
-if (closeEditButton) {
-  closeEditButton.addEventListener("click", closeEditPopUp);
-} else {
-  console.error("Botão de fechar edição não encontrado no DOM");
-}
+// Popup de confirmação de exclusão
+confirmDeleteButton.addEventListener("click", handleConfirmDelete);
 
-if (popupEditProfile) {
-  popupEditProfile.addEventListener('submit', addProfileInfo);
-} else {
-  console.error("Formulário de edição de perfil não encontrado no DOM");
-}
+// Popup de imagem ampliada
+closeBigImage.addEventListener("click", closeBigImagePopUp);
 
-modalProfile.addEventListener("click", function(event) {
+// Fechar popups clicando fora
+modalProfile.addEventListener("click", (event) => {
   if (event.target === modalProfile) {
     closePopup(modalProfile);
   }
 });
 
-// Event listeners para adicionar imagem
-if (addImageButton) {
-  addImageButton.addEventListener("click", appearAddPopUp);
-} else {
-  console.error("Botão de adicionar imagem não encontrado no DOM");
-}
+modalImage.addEventListener("click", (event) => {
+  if (event.target === modalImage) {
+    closePopup(modalImage);
+  }
+});
 
-closeAddButton.forEach(button => {
-  button.addEventListener("click", function() {
+modalBigImage.addEventListener("click", (event) => {
+  if (event.target === modalBigImage || event.target.classList.contains('popup__bigImage-card')) {
+    closePopup(modalBigImage);
+  }
+});
+
+confirmDeletePopup.addEventListener("click", (event) => {
+  if (event.target === confirmDeletePopup) {
+    closePopup(confirmDeletePopup);
+  }
+});
+
+// Fechar todos os popups com a tecla Esc
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    const openedPopups = [modalProfile, modalImage, modalBigImage, confirmDeletePopup];
+    openedPopups.forEach(popup => {
+      if (popup.classList.contains("popup_opened")) {
+        closePopup(popup);
+      }
+    });
+  }
+});
+
+// Inicializar os botões de fechar em todos os popups
+document.querySelectorAll(".popup__close").forEach(button => {
+  button.addEventListener("click", () => {
     const popup = button.closest(".popup__container");
     if (popup) {
       closePopup(popup);
     }
   });
 });
-
-modalImage.addEventListener("click", function(event) {
-  if (event.target === modalImage) {
-    closePopup(modalImage);
-  }
-});
-
-if (formImage) {
-  formImage.addEventListener('submit', addImageCard);
-} else {
-  console.error("Formulário de imagem não encontrado no DOM");
-}
-
-// Event listeners para imagem ampliada
-if (closeBigImage) {
-  closeBigImage.addEventListener("click", closeBigImagePopUp);
-} else {
-  console.error("Botão de fechar imagem grande não encontrado no DOM");
-}
-
-modalBigImage.addEventListener("click", function(event) {
-  if (event.target === modalBigImage || event.target.classList.contains('popup__bigImage-card')) {
-    closePopup(modalBigImage);
-  }
-});
-
-// Logging para debug
-console.log('Botão de edição:', editButton);
-console.log('Formulário de perfil:', popupEditProfile);
-console.log('Botão de fechar perfil:', closeEditButton);
-console.log('Botão de fechar imagem grande:', closeBigImage);

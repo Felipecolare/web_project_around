@@ -8,6 +8,7 @@ export default class PopupWithForm extends Popup {
     this._submitCallback = submitCallback;
     this._form = this._popup.querySelector('form');
     this._inputList = Array.from(this._form.querySelectorAll('.input__text'));
+    this._submitButton = this._form.querySelector('.input__submit');
   }
 
   _getInputValues() {
@@ -19,13 +20,40 @@ export default class PopupWithForm extends Popup {
     return formValues;
   }
 
+  open() {
+    super.open();
+    // Garantir que o formulário esteja em um estado consistente
+    if (this._submitButton) {
+      this._submitButton.removeAttribute('disabled');
+    }
+  }
+
   setEventListeners() {
     super.setEventListeners();
     
     // Adicionar handler para o envio do formulário
     this._form.addEventListener('submit', (evt) => {
       evt.preventDefault();
-      this._submitCallback(this._getInputValues());
+      
+      // Salvar o texto original do botão
+      const originalText = this._submitButton ? this._submitButton.textContent : '';
+      
+      // Alterar o texto para indicar que está processando
+      if (this._submitButton) {
+        this._submitButton.textContent = originalText.includes('Salvar') ? 'Salvando...' : 'Criando...';
+      }
+      
+      // Chamar o callback com os valores do formulário
+      this._submitCallback(this._getInputValues())
+        .then(() => {
+          this.close();
+        })
+        .finally(() => {
+          // Restaurar o texto original do botão
+          if (this._submitButton) {
+            this._submitButton.textContent = originalText;
+          }
+        });
     });
   }
 
