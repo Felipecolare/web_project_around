@@ -28,6 +28,7 @@
               alt="Jacques Cousteau"
               class="profile__image"
             />
+            <!-- O overlay para edição será adicionado via JavaScript -->
           </div>
           <div class="profile__card">
             <h2 class="profile__title">Jacques Cousteau</h2>
@@ -169,6 +170,33 @@
           <button class="popup__close" type="button"></button>
           <h3 class="popup__title">Tem certeza?</h3>
           <button type="button" class="popup__confirm-button">Sim</button>
+        </div>
+      </div>
+      
+      <!-- Popup para alteração de foto do perfil -->
+      <div class="popup__container container-avatar">
+        <div class="popup__card">
+          <button class="popup__close"></button>
+          <h3 class="popup__title">Alterar a foto do perfil</h3>
+          <form class="popup__input input-avatar" novalidate>
+            <div class="input__wrap">
+              <input
+                class="input__text input__text-avatar"
+                id="avatar"
+                type="url"
+                placeholder="Link da imagem"
+                required
+              />
+              <p class="input__errorMessage" id="avatar-error"></p>
+            </div>
+            <button
+              type="submit"
+              class="input__submit input__submit-avatar"
+              disabled
+            >
+              Salvar
+            </button>
+          </form>
         </div>
       </div>
     </div>

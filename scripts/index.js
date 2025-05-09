@@ -4,6 +4,8 @@ import FormValidator from './formValidator.js';
 import Section from './section.js';
 import Api from './api.js';
 import { openPopup, closePopup } from './utils.js';
+import './avatarUpdate.js';
+
 
 // -----------------------------------------------------
 // CONFIGURAÇÃO DA API
@@ -18,6 +20,11 @@ const api = new Api({
     'Content-Type': 'application/json'
   }
 });
+
+// Exportar a instância da API para que outros módulos possam usá-la
+export { api };
+
+// O resto do seu código index.js continua aqui sem alterações...
 
 // -----------------------------------------------------
 // ELEMENTOS DO DOM

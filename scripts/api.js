@@ -11,6 +11,7 @@ export default class Api {
     if (res.ok) {
       return res.json();
     }
+    // se o servidor retornar um erro, rejeite a promessa
     return Promise.reject(`Erro: ${res.status}`);
   }
 
