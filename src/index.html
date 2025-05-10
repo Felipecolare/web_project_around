@@ -7,7 +7,7 @@
     <meta name="description" content="Around Project" />
     <meta name="keywords" content="HTML, CSS, Javascript" />
     <title>Project Around The U.S.</title>
-    <link rel="stylesheet" href="./pages/index.css" />
+    <link rel="stylesheet" href="../pages/index.css" />
   </head>
   <body>
     <div class="page">
@@ -15,7 +15,7 @@
       <header class="header page__container">
         <nav class="nav">
           <img
-            src="./images/logo_around.png"
+            src="../images/logo_around.png"
             alt="Logo Around The U.S."
             class="nav__image"
           />
@@ -24,7 +24,7 @@
         <section class="profile">
           <div class="profile__card-image">
             <img
-              src="./images/jacques_cousteau.png"
+              src="../images/jacques_cousteau.png"
               alt="Jacques Cousteau"
               class="profile__image"
             />
@@ -32,11 +32,11 @@
           </div>
           <div class="profile__card">
             <h2 class="profile__title">Jacques Cousteau</h2>
-            <button class="profile__button-edit"></button>
+            <button type="button" class="profile__button-edit"></button>
             <p class="profile__subtitle">Explorador</p>
           </div>
 
-          <button class="profile__button-add"></button>
+          <button type="button" class="profile__button-add"></button>
         </section>
       </header>
 
@@ -44,17 +44,17 @@
       <main class="grid__content page__container">
         <template class="grid__template">
           <div class="grid__card">
-            <button class="grid__card-delete"></button>
+            <button type="button" class="grid__card-delete"></button>
             <img src="" alt="" class="grid__card-image" />
             <div class="grid__card-text">
               <h3 class="grid__card-title"></h3>
               <img
-                src="./images/heart_icon.png"
+                src="../images/heart_icon.png"
                 alt="Like Button"
                 class="grid__button-heart button-heart-unliked"
               />
               <img
-                src="./images/heart-clicked.png"
+                src="../images/heart-clicked.png"
                 alt="Like Button"
                 class="grid__button-heart button-heart-liked"
               />
@@ -71,7 +71,7 @@
       <!-- Popup para editar perfil -->
       <div class="popup__container container-profile">
         <div class="popup__card"> 
-          <button class="popup__close"></button>
+          <button type="button" class="popup__close"></button>
           <h3 class="popup__title">Editar perfil</h3>
           <form class="popup__input input-profile" novalidate>
             <div class="input__wrap">
@@ -113,7 +113,7 @@
       <!-- Popup para adicionar imagem -->
       <div class="popup__container container-image">
         <div class="popup__card">
-          <button class="popup__close"></button>
+          <button type="button" class="popup__close"></button>
           <h3 class="popup__title">Novo local</h3>
           <form class="form-image">
             <div class="input__wrap">
@@ -146,10 +146,6 @@
               Criar
             </button>
           </form>
-          <button
-            class="popup__button-close button-closeImage"
-            draggable="true"
-          ></button>
         </div>
       </div>
       
@@ -157,7 +153,7 @@
       <div class="popup__bigImage-container">
         <div class="popup__bigImage-card">
           <div class="popup__bigImage-cardContainer">
-            <button class="popup__buttonClose-bigImage"></button>
+            <button type="button" class="popup__buttonClose-bigImage"></button>
             <img class="popup__open-bigImage" src="" alt="" />
             <p class="popup__subtitle-bigImage"></p>
           </div>
@@ -167,7 +163,7 @@
       <!-- Popup para confirmar exclusão de cartão -->
       <div class="popup__container popup__container_type_confirm">
         <div class="popup__card">
-          <button class="popup__close" type="button"></button>
+          <button type="button" class="popup__close"></button>
           <h3 class="popup__title">Tem certeza?</h3>
           <button type="button" class="popup__confirm-button">Sim</button>
         </div>
@@ -176,7 +172,7 @@
       <!-- Popup para alteração de foto do perfil -->
       <div class="popup__container container-avatar">
         <div class="popup__card">
-          <button class="popup__close"></button>
+          <button type="button" class="popup__close"></button>
           <h3 class="popup__title">Alterar a foto do perfil</h3>
           <form class="popup__input input-avatar" novalidate>
             <div class="input__wrap">
@@ -200,6 +196,6 @@
         </div>
       </div>
     </div>
-    <script type="module" src="./scripts/index.js"></script>
+    <script type="module" src="../scripts/index.js"></script>
   </body>
 </html>
